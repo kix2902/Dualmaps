@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="skip">Skip</string>
+
+    <string name="warning_dialog_message">Denying this permission request may makes the application to not work correctly.</string>
+    <string name="warning_dialog_positive">OK</string>
+
+    <string name="mandatory_dialog_message">This permission is mandatory for the correct work of the app and it cannot be denied.</string>
+    <string name="mandatory_dialog_positive">Retry</string>
+    <string name="mandatory_dialog_negative">Exit</string>
+</resources>
