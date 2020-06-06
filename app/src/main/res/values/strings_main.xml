@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_icon_description">Application icon</string>
+
+    <string name="menu_search">Search</string>
+    <string name="menu_navigate_to">Navigate to...</string>
+    <string name="menu_random_place">Random place</string>
+    <string name="menu_my_location">My location</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="no_streetview">No StreetView available for this location</string>
+
+    <string name="dialog_permission_title">Permission required</string>
+    <string name="dialog_permission_message">To use this function you must grant the location permission in the system app settings</string>
+    <string name="dialog_permission_positive">Open settings</string>
+    <string name="dialog_permission_negative">Close</string>
+</resources>
