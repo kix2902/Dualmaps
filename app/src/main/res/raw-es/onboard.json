@@ -1,0 +1,55 @@
+[
+  {
+    "title": "Permiso de ubicación",
+    "type": "PERMISSION",
+    "layout": "IMAGE",
+    "data": {
+      "permission": "android.permission.ACCESS_FINE_LOCATION",
+      "mandatory": false,
+      "description": "Dualmaps necesita acceso a tu localización para buscarte en el mapa. Tu ubicación no se compartirá con nadie.",
+      "images": [
+        "onboard_permission_location"
+      ]
+    },
+    "button": "Entendido",
+    "skippable": false
+  },
+  {
+    "title": "Ayúdanos",
+    "type": "PREFERENCE",
+    "layout": "CHECKBOX",
+    "data": {
+      "key": "collect_data",
+      "description": "Nos gustaría recoger datos anónimos para mejorar la aplicación. Estos datos se usarán en estadísticas y detección de errores. No se mostrarán anuncios.",
+      "checkbox": "Ayudar con la recolección de datos."
+    },
+    "button": "Siguiente",
+    "skippable": true
+  },
+  {
+    "title": "Ajustes",
+    "type": "SIMPLE",
+    "layout": "IMAGE",
+    "data": {
+      "description": "Puedes cambiar el comportamiento de la aplicación desde la pantalla de ajustes.",
+      "images": [
+        "onboard_settings"
+      ]
+    },
+    "button": "Siguiente",
+    "skippable": true
+  },
+  {
+    "title": "Disfruta",
+    "type": "SIMPLE",
+    "layout": "IMAGE",
+    "data": {
+      "description": "Disfruta de Dualmaps viajando desde tu casa por cualquier lugar del planeta.",
+      "images": [
+        "onboard_enjoy"
+      ]
+    },
+    "button": "Terminar",
+    "skippable": false
+  }
+]
