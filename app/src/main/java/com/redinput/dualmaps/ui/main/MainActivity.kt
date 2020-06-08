@@ -16,7 +16,6 @@ import android.view.animation.RotateAnimation
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.view.MenuCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
@@ -109,7 +108,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main, menu)
-        MenuCompat.setGroupDividerEnabled(menu, true)
         return true
     }
 
