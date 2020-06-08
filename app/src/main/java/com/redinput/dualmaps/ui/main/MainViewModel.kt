@@ -23,7 +23,7 @@ import com.redinput.dualmaps.domain.UseCase.Result
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
-        private const val MIN_ACCURACY = 250
+        private const val MIN_ACCURACY = 100
     }
 
     private val liveStatus = MutableLiveData<LocationStatus?>(null)
