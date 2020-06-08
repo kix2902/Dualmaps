@@ -13,6 +13,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -115,6 +116,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         when (item.itemId) {
             R.id.menu_search -> {
 
+                return true
+            }
+            R.id.menu_share -> {
+                shareLocation()
                 return true
             }
             R.id.menu_random -> {
@@ -327,5 +332,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun shareLocation() {
+        val status = viewModel.getObservableStatus().value
+        if (status != null) {
+            val text = getString(R.string.share_text_placeholder, status.latitude, status.longitude)
+
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, text)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_title))
+            startActivity(shareIntent)
+
+        } else {
+            Toast.makeText(this, R.string.share_text_no_location, Toast.LENGTH_LONG).show()
+        }
     }
 }

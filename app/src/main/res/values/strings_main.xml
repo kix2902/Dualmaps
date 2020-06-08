@@ -3,7 +3,8 @@
     <string name="app_icon_description">Application icon</string>
 
     <string name="menu_search">Search</string>
-    <string name="menu_navigate_to">Navigate to...</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_navigate_to">Navigate to…</string>
     <string name="menu_random_place">Random place</string>
     <string name="menu_my_location">My location</string>
     <string name="menu_settings">Settings</string>
@@ -14,4 +15,8 @@
     <string name="dialog_permission_message">To use this function you must grant the location permission in the system app settings</string>
     <string name="dialog_permission_positive">Open settings</string>
     <string name="dialog_permission_negative">Close</string>
+
+    <string name="share_title">Share with…</string>
+    <string name="share_text_placeholder">Latitude: %.5f, Longitude: %.5f.\nShared by #Dualmaps for Android https://play.google.com/store/apps/details?id=com.redinput.dualmaps</string>
+    <string name="share_text_no_location">No location available, try again when a location is shown in the maps</string>
 </resources>
