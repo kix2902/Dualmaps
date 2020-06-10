@@ -99,6 +99,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
                 updateViews(status)
             }
         })
+
+        viewModel.getObservableMessage().observe(this, Observer {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun checkPermissions() {

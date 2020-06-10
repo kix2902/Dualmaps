@@ -12,8 +12,10 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.hadilq.liveevent.LiveEvent
 import com.redinput.dualmaps.Geocode
 import com.redinput.dualmaps.LocationStatus
+import com.redinput.dualmaps.R
 import com.redinput.dualmaps.TAG
 import com.redinput.dualmaps.data.GeocoderRepository
 import com.redinput.dualmaps.data.NetworkRepository
@@ -31,6 +33,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val liveStatus = MutableLiveData<LocationStatus?>(null)
     private val liveLoading = MutableLiveData(false)
+    private val liveMessage = LiveEvent<Int>()
 
     private val fusedProvider =
         LocationServices.getFusedLocationProviderClient(application.applicationContext)
@@ -48,6 +51,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getObservableStatus(): LiveData<LocationStatus?> = liveStatus
     fun getObservableLoading(): LiveData<Boolean> = liveLoading
+    fun getObservableMessage(): LiveData<Int> = liveMessage
 
     fun getRandomLocation() {
         liveLoading.value = true
@@ -61,6 +65,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 is Result.Error -> {
                     Log.e(TAG, "getRandomLocation: ", it.error)
+                    liveMessage.value = R.string.random_error
                 }
             }
         }
@@ -109,6 +114,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 is Result.Error -> {
                     Log.e(TAG, "getLocationFromQuery: ", it.error)
+                    liveMessage.value = R.string.geocoder_error
                 }
             }
         }
