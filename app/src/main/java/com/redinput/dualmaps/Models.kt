@@ -1,6 +1,5 @@
 package com.redinput.dualmaps
 
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlin.random.Random
 
@@ -60,5 +59,16 @@ object GeoNames {
     data class Location(
         val latt: Double,
         val longt: Double
+    )
+}
+
+object Geocode {
+    data class Response(
+        val latitude: Double,
+        val longitude: Double
+    )
+
+    data class Request(
+        val query: String
     )
 }
