@@ -28,7 +28,7 @@ import com.redinput.dualmaps.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
     companion object {
-        private const val STREETVIEW_RADIUS = 10000
+        private const val STREETVIEW_RADIUS = 100
         private const val MAP_ZOOM_DEFAULT = 13F
     }
 
