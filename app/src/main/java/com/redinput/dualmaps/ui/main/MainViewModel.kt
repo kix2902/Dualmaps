@@ -12,9 +12,12 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.redinput.dualmaps.Geocode
 import com.redinput.dualmaps.LocationStatus
 import com.redinput.dualmaps.TAG
+import com.redinput.dualmaps.data.GeocoderRepository
 import com.redinput.dualmaps.data.NetworkRepository
+import com.redinput.dualmaps.domain.GetLocationFromQuery
 import com.redinput.dualmaps.domain.GetRandomCoordinates
 import com.redinput.dualmaps.domain.UseCase.None
 import com.redinput.dualmaps.domain.UseCase.Result
@@ -37,11 +40,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
-    private val getRandomCoordinates =
-        GetRandomCoordinates(
-            viewModelScope,
-            NetworkRepository
-        )
+    private val getRandomCoordinates = GetRandomCoordinates(viewModelScope, NetworkRepository)
+    private val getLocationFromQuery = GetLocationFromQuery(
+        viewModelScope,
+        GeocoderRepository.getInstance(application.applicationContext)
+    )
 
     fun getObservableStatus(): LiveData<LocationStatus?> = liveStatus
     fun getObservableLoading(): LiveData<Boolean> = liveLoading
@@ -91,6 +94,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         liveStatus.value = liveStatus.value?.apply {
             latitude = location.latitude
             longitude = location.longitude
+        }
+    }
+
+    fun searchLocation(query: String) {
+        liveLoading.value = true
+        getLocationFromQuery.invoke(Geocode.Request(query)) {
+            liveLoading.value = false
+            when (it) {
+                is Result.Success<*> -> {
+                    val success = it as Result.Success<LatLng>
+                    val location = success.data
+                    liveStatus.value = LocationStatus(location.latitude, location.longitude)
+                }
+                is Result.Error -> {
+                    Log.e(TAG, "getLocationFromQuery: ", it.error)
+                }
+            }
         }
     }
 }

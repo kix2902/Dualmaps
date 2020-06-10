@@ -13,9 +13,11 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.maps.*
@@ -40,6 +42,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
     private var streetView: StreetViewPanorama? = null
 
     private var userMovedMap = false
+
+    private lateinit var searchView: SearchView
 
     private val animRotate = RotateAnimation(
         0F,
@@ -107,17 +111,37 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
     //endregion
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    //region Menu related methods
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_main, menu)
+
+        val searchItem = menu.findItem(R.id.menu_search)
+        searchView = searchItem.actionView as SearchView
+
+        searchView.queryHint = "Search"
+        searchView.isSubmitButtonEnabled = true
+        searchView.setIconifiedByDefault(true)
+        searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    viewModel.searchLocation(it)
+                    searchItem.collapseActionView()
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_search -> {
-
-                return true
-            }
             R.id.menu_share -> {
                 shareLocation()
                 return true
@@ -141,6 +165,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             else -> return super.onOptionsItemSelected(item)
         }
     }
+    //endregion
+
 
     //region Map methods
     override fun onMapReady(map: GoogleMap?) {
