@@ -17,6 +17,6 @@
     <string name="dialog_permission_negative">Close</string>
 
     <string name="share_title">Share with…</string>
-    <string name="share_text_placeholder">Latitude: %.5f, Longitude: %.5f.\nShared by #Dualmaps for Android https://play.google.com/store/apps/details?id=com.redinput.dualmaps</string>
+    <string name="share_text_placeholder">I like this location: Latitude: %.5f, Longitude: %.5f.\nShared by #Dualmaps for Android https://play.google.com/store/apps/details?id=com.redinput.dualmaps</string>
     <string name="share_text_no_location">No location available, try again when a location is shown in the maps</string>
 </resources>
