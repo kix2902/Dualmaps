@@ -10,6 +10,7 @@
     <string name="menu_settings">Settings</string>
 
     <string name="no_streetview">No StreetView available for this location</string>
+    <string name="location_icon_description">marker icon</string>
 
     <string name="dialog_permission_title">Permission required</string>
     <string name="dialog_permission_message">To use this function you must grant the location permission in the system app settings</string>
@@ -22,4 +23,6 @@
 
     <string name="geocoder_error">Sorry, no location was found</string>
     <string name="random_error">Cannot found a valid random location</string>
+    <string name="address_empty_title">No address for the location</string>
+    <string name="address_empty_subtitle">%.5f, %.5f</string>
 </resources>
