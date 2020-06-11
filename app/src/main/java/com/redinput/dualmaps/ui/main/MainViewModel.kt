@@ -13,12 +13,10 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.hadilq.liveevent.LiveEvent
-import com.redinput.dualmaps.Geocode
-import com.redinput.dualmaps.LocationStatus
-import com.redinput.dualmaps.R
-import com.redinput.dualmaps.TAG
+import com.redinput.dualmaps.*
 import com.redinput.dualmaps.data.GeocoderRepository
 import com.redinput.dualmaps.data.NetworkRepository
+import com.redinput.dualmaps.domain.GetAddressFromLocation
 import com.redinput.dualmaps.domain.GetLocationFromQuery
 import com.redinput.dualmaps.domain.GetRandomCoordinates
 import com.redinput.dualmaps.domain.UseCase.None
@@ -45,6 +43,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val getRandomCoordinates = GetRandomCoordinates(viewModelScope, NetworkRepository)
     private val getLocationFromQuery = GetLocationFromQuery(
+        viewModelScope,
+        GeocoderRepository.getInstance(application.applicationContext)
+    )
+    private val getAddressFromLocation = GetAddressFromLocation(
         viewModelScope,
         GeocoderRepository.getInstance(application.applicationContext)
     )
@@ -99,6 +101,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         liveStatus.value = liveStatus.value?.apply {
             latitude = location.latitude
             longitude = location.longitude
+        }
+        getAddressFromLocation.invoke(location) {
+            when (it) {
+                is Result.Success<*> -> {
+                    val success = it as Result.Success<Geocode.Address>
+                    val address = success.data
+                    liveStatus.value = liveStatus.value?.apply {
+                        this.address = Address(address.title, address.subtitle)
+                    }
+                }
+                is Result.Error -> {
+                    Log.e(TAG, "getAddressFromLocation: ", it.error)
+                    liveStatus.value = liveStatus.value?.apply {
+                        this.address = null
+                    }
+                }
+            }
         }
     }
 

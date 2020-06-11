@@ -23,9 +23,11 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.redinput.dualmaps.Address
 import com.redinput.dualmaps.LocationStatus
 import com.redinput.dualmaps.R
 import com.redinput.dualmaps.databinding.ActivityMainBinding
+import com.redinput.dualmaps.setAdaptativeText
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
@@ -88,7 +90,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         viewModel.getObservableLoading().observe(this, Observer { isLoading ->
             binding.appIcon.apply {
                 when (isLoading) {
-                    true -> startAnimation(animRotate)
+                    true -> {
+                        clearAddress()
+                        startAnimation(animRotate)
+                    }
                     false -> clearAnimation()
                 }
             }
@@ -287,6 +292,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         if (status.bearing != marker?.rotation) updateBearingMap(status.bearing)
         if (status.bearing != streetView?.panoramaCamera?.bearing) updateBearingStreetView(status.bearing)
         binding.compass.setDegrees(status.bearing)
+
+        status.address?.let { showAddress(it) } ?: emptyAddress(position)
     }
 
     private fun updatePositionMap(position: LatLng) {
@@ -340,6 +347,26 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         Handler().postDelayed({
             streetView?.setOnStreetViewPanoramaCameraChangeListener(streetViewBearingListener)
         }, 100)
+    }
+
+    private fun clearAddress() {
+        updateAddress("--", "--")
+    }
+
+    private fun showAddress(address: Address) {
+        updateAddress(address.title, address.subtitle)
+    }
+
+    private fun emptyAddress(position: LatLng) {
+        val title = getString(R.string.address_empty_title)
+        val subtitle =
+            getString(R.string.address_empty_subtitle, position.latitude, position.longitude)
+        updateAddress(title, subtitle)
+    }
+
+    private fun updateAddress(title: String, subtitle: String) {
+        binding.locationTitle.setAdaptativeText(title, 12, 24)
+        binding.locationSubtitle.setAdaptativeText(subtitle, 8, 16)
     }
     //endregion
 
