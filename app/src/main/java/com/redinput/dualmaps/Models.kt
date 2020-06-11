@@ -6,7 +6,13 @@ import kotlin.random.Random
 data class LocationStatus(
     var latitude: Double,
     var longitude: Double,
+    var address: Address? = null,
     var bearing: Float = Random.nextDouble(0.0, 360.0).toFloat()
+)
+
+data class Address(
+    val title: String,
+    val subtitle: String
 )
 
 data class OnboardState(
