@@ -63,9 +63,14 @@ object GeoNames {
 }
 
 object Geocode {
-    data class Response(
+    data class Location(
         val latitude: Double,
         val longitude: Double
+    )
+
+    data class Address(
+        val title: String,
+        val subtitle: String
     )
 
     data class Request(
