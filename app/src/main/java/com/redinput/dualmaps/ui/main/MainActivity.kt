@@ -14,26 +14,28 @@ import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.redinput.dualmaps.Address
-import com.redinput.dualmaps.LocationStatus
+import com.redinput.dualmaps.*
 import com.redinput.dualmaps.R
 import com.redinput.dualmaps.databinding.ActivityMainBinding
-import com.redinput.dualmaps.setAdaptativeText
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
     companion object {
         private const val STREETVIEW_RADIUS = 100
         private const val MAP_ZOOM_DEFAULT = 13F
+        private const val ANIMATION_DURATION_IN = 100L
+        private const val ANIMATION_DURATION_OUT = 200L
+        private const val MESSAGE_DURATION = 5000L
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -106,7 +108,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         })
 
         viewModel.getObservableMessage().observe(this, Observer {
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+            processMessage(it)
         })
     }
 
@@ -365,10 +367,45 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
     }
 
     private fun updateAddress(title: String, subtitle: String) {
-        binding.locationTitle.setAdaptativeText(title, 12, 24)
-        binding.locationSubtitle.setAdaptativeText(subtitle, 8, 16)
+        if (binding.locationTitle.text != title) {
+            binding.locationTitle.setAdaptativeText(title, 12, 24)
+        }
+        if (binding.locationSubtitle.text != subtitle) {
+            binding.locationSubtitle.setAdaptativeText(subtitle, 8, 16)
+        }
     }
     //endregion
+
+    private fun processMessage(message: Message) {
+        when (message.type) {
+            MessageType.ERROR -> binding.bannerTop.setBackgroundResource(R.color.red)
+            MessageType.WARNING -> binding.bannerTop.setBackgroundResource(R.color.yellow)
+        }
+        binding.bannerTop.text = getString(message.text)
+        showBannerTop()
+
+        Handler().postDelayed({ hideBannerTop() }, MESSAGE_DURATION)
+    }
+
+    private fun showBannerTop() {
+        val transition = Fade(Fade.MODE_IN).apply {
+            duration = ANIMATION_DURATION_IN
+            addTarget(binding.bannerTop)
+        }
+
+        TransitionManager.beginDelayedTransition(binding.root, transition)
+        binding.bannerTop.visibility = View.VISIBLE
+    }
+
+    private fun hideBannerTop() {
+        val transition = Fade(Fade.MODE_OUT).apply {
+            duration = ANIMATION_DURATION_OUT
+            addTarget(binding.bannerTop)
+        }
+
+        TransitionManager.beginDelayedTransition(binding.root, transition)
+        binding.bannerTop.visibility = View.GONE
+    }
 
     private fun showDialogPermission() {
         MaterialAlertDialogBuilder(this)
@@ -406,7 +443,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             startActivity(shareIntent)
 
         } else {
-            Toast.makeText(this, R.string.share_text_no_location, Toast.LENGTH_LONG).show()
+            processMessage(Message(MessageType.WARNING, R.string.share_text_no_location))
         }
     }
 }
