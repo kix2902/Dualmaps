@@ -1,5 +1,6 @@
 package com.redinput.dualmaps
 
+import androidx.annotation.StringRes
 import com.squareup.moshi.JsonClass
 import kotlin.random.Random
 
@@ -14,6 +15,16 @@ data class Address(
     val title: String,
     val subtitle: String
 )
+
+data class Message(
+    val type: MessageType,
+    @StringRes val text: Int
+)
+
+enum class MessageType {
+    ERROR,
+    WARNING
+}
 
 data class OnboardState(
     var position: Int = 0,
