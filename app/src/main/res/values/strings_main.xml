@@ -19,7 +19,7 @@
 
     <string name="share_title">Share with…</string>
     <string name="share_text_placeholder">I like this location: Latitude: %.5f, Longitude: %.5f.\nShared by #Dualmaps for Android https://play.google.com/store/apps/details?id=com.redinput.dualmaps</string>
-    <string name="share_text_no_location">No location available, try again when a location is shown in the maps</string>
+    <string name="share_text_no_location">No location available\nTry again when a location is shown in the maps</string>
 
     <string name="geocoder_error">Sorry, no location was found</string>
     <string name="random_error">Cannot found a valid random location</string>
