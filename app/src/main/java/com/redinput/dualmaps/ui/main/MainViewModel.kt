@@ -31,7 +31,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val liveStatus = MutableLiveData<LocationStatus?>(null)
     private val liveLoading = MutableLiveData(false)
-    private val liveMessage = LiveEvent<Int>()
+    private val liveMessage = LiveEvent<Message>()
 
     private val fusedProvider =
         LocationServices.getFusedLocationProviderClient(application.applicationContext)
@@ -53,7 +53,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getObservableStatus(): LiveData<LocationStatus?> = liveStatus
     fun getObservableLoading(): LiveData<Boolean> = liveLoading
-    fun getObservableMessage(): LiveData<Int> = liveMessage
+    fun getObservableMessage(): LiveData<Message> = liveMessage
 
     fun getRandomLocation() {
         liveLoading.value = true
@@ -67,7 +67,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 is Result.Error -> {
                     Log.e(TAG, "getRandomLocation: ", it.error)
-                    liveMessage.value = R.string.random_error
+                    liveMessage.value = Message(MessageType.ERROR, R.string.random_error)
                 }
             }
         }
@@ -133,7 +133,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 is Result.Error -> {
                     Log.e(TAG, "getLocationFromQuery: ", it.error)
-                    liveMessage.value = R.string.geocoder_error
+                    liveMessage.value = Message(MessageType.ERROR, R.string.geocoder_error)
                 }
             }
         }
