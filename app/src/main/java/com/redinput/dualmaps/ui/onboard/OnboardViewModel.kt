@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.redinput.dualmaps.Onboard
 import com.redinput.dualmaps.OnboardState
 import com.redinput.dualmaps.R
@@ -51,6 +53,8 @@ class OnboardViewModel(application: Application) : AndroidViewModel(application)
     fun savePreferenceBoolean(key: String, value: Boolean) {
         if (key == GDPR) {
             saveGDPR.invoke(value)
+            FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(value)
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(value)
         }
     }
 
