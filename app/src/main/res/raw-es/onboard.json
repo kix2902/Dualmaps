@@ -19,7 +19,7 @@
     "type": "PREFERENCE",
     "layout": "CHECKBOX",
     "data": {
-      "key": "collect_data",
+      "key": "gdpr",
       "description": "Nos gustaría recoger datos anónimos para mejorar la aplicación. Estos datos se usarán en estadísticas y detección de errores. No se mostrarán anuncios.",
       "checkbox": "Ayudar con la recolección de datos."
     },

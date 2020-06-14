@@ -19,7 +19,7 @@
     "type": "PREFERENCE",
     "layout": "CHECKBOX",
     "data": {
-      "key": "collect_data",
+      "key": "gdpr",
       "description": "We'd like to collect anonymous data in order to improve the app. This data will be used for analytics and crash detection. No ads will be shown.",
       "checkbox": "Help with data recolection."
     },
