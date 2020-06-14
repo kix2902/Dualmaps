@@ -11,6 +11,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.redinput.dualmaps.Onboard
 import com.redinput.dualmaps.R
 import com.redinput.dualmaps.databinding.ActivityOnboardBinding
@@ -31,12 +34,17 @@ class OnboardActivity : AppCompatActivity() {
 
     private lateinit var currentStep: Onboard.Step
 
+    private val firebase = Firebase.analytics
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (Once.beenDone(Once.THIS_APP_INSTALL, FIRST_LAUNCH)) {
             navigateToMainActivity()
             return
+
+        } else {
+            firebase.logEvent(FirebaseAnalytics.Event.TUTORIAL_BEGIN, null)
         }
 
         binding = ActivityOnboardBinding.inflate(layoutInflater)
@@ -75,6 +83,8 @@ class OnboardActivity : AppCompatActivity() {
             }
 
             if (status.position >= status.total) {
+                firebase.logEvent(FirebaseAnalytics.Event.TUTORIAL_COMPLETE, null)
+
                 navigateToMainActivity()
                 return@Observer
             }
