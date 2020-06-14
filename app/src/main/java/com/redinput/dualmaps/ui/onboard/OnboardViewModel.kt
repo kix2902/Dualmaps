@@ -4,14 +4,20 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.preference.PreferenceManager
+import androidx.lifecycle.viewModelScope
 import com.redinput.dualmaps.Onboard
 import com.redinput.dualmaps.OnboardState
 import com.redinput.dualmaps.R
+import com.redinput.dualmaps.data.PreferencesRepository
+import com.redinput.dualmaps.domain.SaveGDPR
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 
 class OnboardViewModel(application: Application) : AndroidViewModel(application) {
+
+    companion object {
+        private const val GDPR = "gdpr"
+    }
 
     private val context = application.applicationContext
 
@@ -25,6 +31,8 @@ class OnboardViewModel(application: Application) : AndroidViewModel(application)
     private val status = OnboardState()
     private val liveStatus = MutableLiveData(status)
     fun getObservableStatus(): LiveData<OnboardState> = liveStatus
+
+    private val saveGDPR = SaveGDPR(viewModelScope, PreferencesRepository.getInstance(context))
 
     fun loadOnboardFile() {
         val json = context.resources
@@ -41,10 +49,9 @@ class OnboardViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun savePreferenceBoolean(key: String, value: Boolean) {
-        PreferenceManager.getDefaultSharedPreferences(context)
-            .edit()
-            .putBoolean(key, value)
-            .apply()
+        if (key == GDPR) {
+            saveGDPR.invoke(value)
+        }
     }
 
     fun nextStep() {
