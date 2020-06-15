@@ -57,8 +57,7 @@ class OnboardActivity : AppCompatActivity() {
     private fun configureBindingListeners() {
         binding.next.setOnClickListener {
             when (currentStep.type) {
-                Onboard.Type.SIMPLE,
-                Onboard.Type.PREFERENCE -> nextStep()
+                Onboard.Type.SIMPLE -> nextStep()
                 Onboard.Type.PERMISSION -> checkPermission()
             }
         }

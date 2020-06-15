@@ -55,8 +55,7 @@ object Onboard {
 
     enum class Type {
         SIMPLE,
-        PERMISSION,
-        PREFERENCE
+        PERMISSION
     }
 
     enum class Layout {

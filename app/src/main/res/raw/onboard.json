@@ -16,7 +16,7 @@
   },
   {
     "title": "Help us",
-    "type": "PREFERENCE",
+    "type": "SIMPLE",
     "layout": "CHECKBOX",
     "data": {
       "key": "gdpr",
