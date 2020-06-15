@@ -24,6 +24,10 @@ import androidx.transition.TransitionManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.redinput.dualmaps.*
 import com.redinput.dualmaps.R
 import com.redinput.dualmaps.databinding.ActivityMainBinding
@@ -62,6 +66,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         repeatMode = Animation.RESTART
         interpolator = LinearInterpolator()
     }
+
+    private val firebase = Firebase.analytics
 
     //region Activity init
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,6 +143,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
+                    firebase.logEvent(FirebaseAnalytics.Event.SEARCH) {
+                        param(FirebaseAnalytics.Param.SEARCH_TERM, it)
+                    }
+
                     viewModel.searchLocation(it)
                     searchItem.collapseActionView()
                 }
@@ -429,6 +439,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
     }
 
     private fun shareLocation() {
+        firebase.logEvent(FirebaseAnalytics.Event.SHARE) {
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, "text")
+            param(FirebaseAnalytics.Param.METHOD, "menu")
+        }
+
         val status = viewModel.getObservableStatus().value
         if (status != null) {
             val text = getString(R.string.share_text_placeholder, status.latitude, status.longitude)
