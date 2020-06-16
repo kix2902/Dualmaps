@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_icon_description">Icono de la aplicación</string>
+
+    <string name="menu_search">Buscar</string>
+    <string name="menu_share">Compartir</string>
+    <string name="menu_navigate_to">Navegar a…</string>
+    <string name="menu_random_place">Sitio aleatorio</string>
+    <string name="menu_my_location">Mi ubicación</string>
+    <string name="menu_settings">Ajustes</string>
+
+    <string name="no_streetview">No hay StreetView disponibles en esta ubicación</string>
+    <string name="location_icon_description">icono del marcador</string>
+
+    <string name="dialog_permission_title">Permiso requerido</string>
+    <string name="dialog_permission_message">Para usar esta función debes permitir el uso de la ubicación en los ajustes del sistema</string>
+    <string name="dialog_permission_positive">Abrir ajustes</string>
+    <string name="dialog_permission_negative">Cerrar</string>
+
+    <string name="share_title">Compartir con…</string>
+    <string name="share_text_placeholder">Me gusta esta ubicación: Latitud: %.5f, Longitud: %.5f.\nCompartido con #Dualmaps para Android https://play.google.com/store/apps/details?id=com.redinput.dualmaps</string>
+    <string name="share_text_no_location">No hay ubicación disponible\nPrueba de nuevo cuando una ubicación se muestre en el mapa</string>
+
+    <string name="geocoder_error">Lo siento, no hemos encontrado ninguna ubicación</string>
+    <string name="random_error">No podemos encontrar una ubicación aleatoria válida</string>
+    <string name="address_empty_title">Esta ubicación no tiene dirección</string>
+    <string name="address_empty_subtitle">%.5f, %.5f</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="skip">Omitir</string>
+
+    <string name="warning_dialog_message">Denegando este permiso puede hacer que la aplicación no funcione correctamente.</string>
+    <string name="warning_dialog_positive">OK</string>
+
+    <string name="mandatory_dialog_message">Este permiso es obligatorio para el correcto funcionamiento de la aplicación y no puede ser denegado.</string>
+    <string name="mandatory_dialog_positive">Reintentar</string>
+    <string name="mandatory_dialog_negative">Salir</string>
+</resources>
