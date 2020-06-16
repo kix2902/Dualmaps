@@ -12,13 +12,15 @@ android {
         targetSdkVersion 29
         versionCode 30
         versionName "2.0"
+        resConfigs "en", "es"
     }
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
