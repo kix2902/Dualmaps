@@ -10,7 +10,7 @@ android {
         applicationId "com.redinput.dualmaps"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 31
+        versionCode 32
         versionName "2.0-beta1"
         resConfigs "en", "es"
     }
