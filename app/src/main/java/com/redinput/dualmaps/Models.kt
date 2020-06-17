@@ -1,6 +1,7 @@
 package com.redinput.dualmaps
 
 import androidx.annotation.StringRes
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlin.random.Random
 
@@ -53,11 +54,13 @@ object Onboard {
         val checkbox: String? = null
     )
 
+    @JsonClass(generateAdapter = false)
     enum class Type {
         SIMPLE,
         PERMISSION
     }
 
+    @JsonClass(generateAdapter = false)
     enum class Layout {
         TEXT,
         IMAGE,
