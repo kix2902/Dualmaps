@@ -31,6 +31,7 @@ import com.google.firebase.ktx.Firebase
 import com.redinput.dualmaps.*
 import com.redinput.dualmaps.R
 import com.redinput.dualmaps.databinding.ActivityMainBinding
+import com.redinput.dualmaps.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
@@ -180,7 +181,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
                 return true
             }
             R.id.menu_settings -> {
-
+                startActivity(Intent(this, SettingsActivity::class.java))
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
