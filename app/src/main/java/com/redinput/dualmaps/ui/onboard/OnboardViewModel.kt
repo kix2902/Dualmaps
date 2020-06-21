@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.redinput.dualmaps.DualmapsApplication
 import com.redinput.dualmaps.Onboard
 import com.redinput.dualmaps.OnboardState
 import com.redinput.dualmaps.R
@@ -21,8 +22,6 @@ class OnboardViewModel(application: Application) : AndroidViewModel(application)
         private const val GDPR = "gdpr"
     }
 
-    private val context = application.applicationContext
-
     private val moshi = Moshi.Builder().build()
     private val onboardJsonType =
         Types.newParameterizedType(List::class.java, Onboard.Step::class.java)
@@ -34,10 +33,13 @@ class OnboardViewModel(application: Application) : AndroidViewModel(application)
     private val liveStatus = MutableLiveData(status)
     fun getObservableStatus(): LiveData<OnboardState> = liveStatus
 
-    private val saveGDPR = SaveGDPR(viewModelScope, PreferencesRepository.getInstance(context))
+    private val saveGDPR = SaveGDPR(
+        viewModelScope,
+        PreferencesRepository.getInstance(application.applicationContext)
+    )
 
     fun loadOnboardFile() {
-        val json = context.resources
+        val json = getApplication<DualmapsApplication>().applicationContext.resources
             .openRawResource(R.raw.onboard)
             .bufferedReader()
             .use { it.readText() }
@@ -53,7 +55,8 @@ class OnboardViewModel(application: Application) : AndroidViewModel(application)
     fun savePreferenceBoolean(key: String, value: Boolean) {
         if (key == GDPR) {
             saveGDPR.invoke(value)
-            FirebaseAnalytics.getInstance(context).setAnalyticsCollectionEnabled(value)
+            FirebaseAnalytics.getInstance(getApplication<DualmapsApplication>().applicationContext)
+                .setAnalyticsCollectionEnabled(value)
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(value)
         }
     }
