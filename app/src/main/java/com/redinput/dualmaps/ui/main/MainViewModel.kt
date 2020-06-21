@@ -21,6 +21,7 @@ import com.redinput.dualmaps.domain.GetLocationFromQuery
 import com.redinput.dualmaps.domain.GetRandomCoordinates
 import com.redinput.dualmaps.domain.UseCase.None
 import com.redinput.dualmaps.domain.UseCase.Result
+import com.redinput.dualmaps.domain.UseCase.Result.*
 
 @SuppressLint("MissingPermission")
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -60,12 +61,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         getRandomCoordinates.invoke(None()) {
             liveLoading.value = false
             when (it) {
-                is Result.Success<*> -> {
-                    val success = it as Result.Success<LatLng>
+                is Success<*> -> {
+                    val success = it as Success<LatLng>
                     val location = success.data
                     liveStatus.value = LocationStatus(location.latitude, location.longitude)
                 }
-                is Result.Error -> {
+                is Error -> {
                     Log.e(TAG, "getRandomLocation: ", it.error)
                     liveMessage.value = Message(MessageType.ERROR, R.string.random_error)
                 }
@@ -104,14 +105,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
         getAddressFromLocation.invoke(location) {
             when (it) {
-                is Result.Success<*> -> {
-                    val success = it as Result.Success<Geocode.Address>
+                is Success<*> -> {
+                    val success = it as Success<Geocode.Address>
                     val address = success.data
                     liveStatus.value = liveStatus.value?.apply {
                         this.address = Address(address.title, address.subtitle)
                     }
                 }
-                is Result.Error -> {
+                is Error -> {
                     Log.e(TAG, "getAddressFromLocation: ", it.error)
                     liveStatus.value = liveStatus.value?.apply {
                         this.address = null
@@ -126,12 +127,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         getLocationFromQuery.invoke(Geocode.Request(query)) {
             liveLoading.value = false
             when (it) {
-                is Result.Success<*> -> {
-                    val success = it as Result.Success<LatLng>
+                is Success<*> -> {
+                    val success = it as Success<LatLng>
                     val location = success.data
                     liveStatus.value = LocationStatus(location.latitude, location.longitude)
                 }
-                is Result.Error -> {
+                is Error -> {
                     Log.e(TAG, "getLocationFromQuery: ", it.error)
                     liveMessage.value = Message(MessageType.ERROR, R.string.geocoder_error)
                 }
