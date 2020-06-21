@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="image_description">image</string>
     <string name="skip">Skip</string>
 
     <string name="warning_dialog_message">Denying this permission request may makes the application to not work correctly.</string>

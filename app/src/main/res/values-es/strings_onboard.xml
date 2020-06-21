@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="image_description">imagen</string>
     <string name="skip">Omitir</string>
 
     <string name="warning_dialog_message">Denegando este permiso puede hacer que la aplicación no funcione correctamente.</string>
