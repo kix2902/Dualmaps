@@ -4,7 +4,6 @@
 
     <string name="menu_search">Search</string>
     <string name="menu_share">Share</string>
-    <string name="menu_navigate_to">Navigate to…</string>
     <string name="menu_random_place">Random place</string>
     <string name="menu_my_location">My location</string>
     <string name="menu_settings">Settings</string>
