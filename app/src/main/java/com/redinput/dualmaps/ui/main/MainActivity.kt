@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.view.HapticFeedbackConstants
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -223,6 +224,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         googleMap?.setOnCameraMoveCanceledListener(mapCancelledListener)
 
         googleMap?.setOnMapLongClickListener { position ->
+            window.decorView.performHapticFeedback(
+                HapticFeedbackConstants.LONG_PRESS,
+                HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+            )
             viewModel.updateLocation(position)
         }
         googleMap?.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
@@ -231,6 +236,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             }
 
             override fun onMarkerDragStart(m: Marker?) {
+                window.decorView.performHapticFeedback(
+                    HapticFeedbackConstants.VIRTUAL_KEY,
+                    HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
+                )
             }
 
             override fun onMarkerDrag(m: Marker?) {
