@@ -129,12 +129,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             }
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_style))
-    }
     //endregion
 
 
