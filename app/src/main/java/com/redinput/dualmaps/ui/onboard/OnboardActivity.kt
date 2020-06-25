@@ -67,7 +67,9 @@ class OnboardActivity : AppCompatActivity() {
         }
 
         binding.checkboxCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.savePreferenceBoolean(currentStep.data.key!!, isChecked)
+            if (currentStep.data.key != null) {
+                viewModel.savePreferenceBoolean(currentStep.data.key!!, isChecked)
+            }
         }
 
         binding.checkboxText.setOnClickListener {
@@ -109,7 +111,9 @@ class OnboardActivity : AppCompatActivity() {
             } ?: hideViews()
         })
 
-        viewModel.loadOnboardFile()
+        if (viewModel.getObservableStatus().value?.step == null) {
+            viewModel.loadOnboardFile()
+        }
     }
 
     private fun hideViews() {
