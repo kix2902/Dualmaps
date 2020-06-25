@@ -120,10 +120,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
     }
 
     private fun checkPermissions() {
-        if (hasLocationPermission()) {
-            viewModel.getCurrentLocation()
-        } else {
-            viewModel.getRandomLocation()
+        if (viewModel.getObservableStatus().value == null) {
+            if (hasLocationPermission()) {
+                viewModel.getCurrentLocation()
+            } else {
+                viewModel.getRandomLocation()
+            }
         }
     }
     //endregion
