@@ -3,6 +3,7 @@ package com.redinput.dualmaps.ui.settings
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.redinput.dualmaps.R
 import com.redinput.dualmaps.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
@@ -18,5 +19,10 @@ class SettingsActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, SettingsFragment())
+            .commit()
     }
 }
