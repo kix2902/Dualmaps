@@ -20,8 +20,8 @@ import com.redinput.dualmaps.domain.GetAddressFromLocation
 import com.redinput.dualmaps.domain.GetLocationFromQuery
 import com.redinput.dualmaps.domain.GetRandomCoordinates
 import com.redinput.dualmaps.domain.UseCase.None
-import com.redinput.dualmaps.domain.UseCase.Result
-import com.redinput.dualmaps.domain.UseCase.Result.*
+import com.redinput.dualmaps.domain.UseCase.Result.Error
+import com.redinput.dualmaps.domain.UseCase.Result.Success
 
 @SuppressLint("MissingPermission")
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -65,6 +65,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     val success = it as Success<LatLng>
                     val location = success.data
                     liveStatus.value = LocationStatus(location.latitude, location.longitude)
+                    refreshAddress()
                 }
                 is Error -> {
                     Log.e(TAG, "getRandomLocation: ", it.error)
@@ -86,6 +87,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val location = locationResult.locations.getOrNull(0)
                 if ((location != null) && (location.hasAccuracy()) && (location.accuracy <= MIN_ACCURACY)) {
                     liveStatus.value = LocationStatus(location.latitude, location.longitude)
+                    refreshAddress()
                 }
             }
             fusedProvider.removeLocationUpdates(this)
@@ -103,19 +105,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             latitude = location.latitude
             longitude = location.longitude
         }
-        getAddressFromLocation.invoke(location) {
-            when (it) {
-                is Success<*> -> {
-                    val success = it as Success<Geocode.Address>
-                    val address = success.data
-                    liveStatus.value = liveStatus.value?.apply {
-                        this.address = Address(address.title, address.subtitle)
+        refreshAddress()
+    }
+
+    private fun refreshAddress() {
+        liveStatus.value?.let { status ->
+            val location = LatLng(status.latitude, status.longitude)
+            getAddressFromLocation.invoke(location) {
+                when (it) {
+                    is Success<*> -> {
+                        val success = it as Success<Geocode.Address>
+                        val address = success.data
+                        liveStatus.value = liveStatus.value?.apply {
+                            this.address = Address(address.title, address.subtitle)
+                        }
                     }
-                }
-                is Error -> {
-                    Log.e(TAG, "getAddressFromLocation: ", it.error)
-                    liveStatus.value = liveStatus.value?.apply {
-                        this.address = null
+                    is Error -> {
+                        Log.e(TAG, "getAddressFromLocation: ", it.error)
+                        liveStatus.value = liveStatus.value?.apply {
+                            this.address = null
+                        }
                     }
                 }
             }
