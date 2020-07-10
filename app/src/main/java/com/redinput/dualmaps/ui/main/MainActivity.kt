@@ -118,6 +118,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         viewModel.liveMessage.observe(this, Observer {
             processMessage(it)
         })
+
+        viewModel.liveUIStatus.observe(this, Observer { status ->
+            when (status.mapType) {
+                0 -> googleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
+                1 -> googleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                2 -> googleMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
+                3 -> googleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
+            }
+            when (status.showCompass) {
+                true -> binding.compass.visibility = View.VISIBLE
+                false -> binding.compass.visibility = View.GONE
+            }
+            when (status.showAddress) {
+                true -> binding.addressContainer.visibility = View.VISIBLE
+                false -> binding.addressContainer.visibility = View.GONE
+            }
+        })
     }
 
     private fun checkPermissions() {
@@ -128,6 +145,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
                 viewModel.getRandomLocation()
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.updateUI()
     }
     //endregion
 
@@ -217,6 +240,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             googleMap?.moveCamera(CameraUpdateFactory.newLatLng(position))
 
             updateBearingMap(status.bearing)
+        }
+        viewModel.liveUIStatus.value?.also { status ->
+            when (status.mapType) {
+                0 -> googleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
+                1 -> googleMap?.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                2 -> googleMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
+                3 -> googleMap?.mapType = GoogleMap.MAP_TYPE_TERRAIN
+            }
         }
 
         googleMap?.setOnCameraMoveStartedListener(mapStartedListener)
