@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="category_general">General</string>
+    <string name="category_about">About</string>
+
+    <string name="key_map_type" translatable="false">setting_map_type</string>
+    <string name="default_map_type" translatable="false">0</string>
+    <string name="pref_map_type_title">Map type</string>
+    <string name="pref_map_type_dialog">Select map type</string>
+    <string-array name="array_map_types">
+        <item>Normal</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+        <item>Terrain</item>
+    </string-array>
+    <string-array name="array_map_types_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="key_show_compass" translatable="false">setting_compass</string>
+    <bool name="default_show_compass">true</bool>
+    <string name="preference_show_compass">Show compass</string>
+
+    <string name="key_show_address" translatable="false">setting_address</string>
+    <bool name="default_show_address">true</bool>
+    <string name="preference_show_address">Show address</string>
+
+    <string name="preference_more_apps">More apps from developer</string>
+    <string name="preference_help_developer">Help the developer</string>
+</resources>

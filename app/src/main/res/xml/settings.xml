@@ -1,4 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/category_general">
+        <ListPreference
+            app:defaultValue="@string/default_map_type"
+            app:dialogTitle="@string/pref_map_type_dialog"
+            app:entries="@array/array_map_types"
+            app:entryValues="@array/array_map_types_values"
+            app:key="@string/key_map_type"
+            app:summary="%s"
+            app:title="@string/pref_map_type_title" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="@bool/default_show_compass"
+            app:key="@string/key_show_compass"
+            app:title="@string/preference_show_compass" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="@bool/default_show_address"
+            app:key="@string/key_show_address"
+            app:title="@string/preference_show_address" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_about">
+        <Preference
+            app:summary="@string/app_version"
+            app:title="@string/app_name">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://play.google.com/store/apps/details?id=com.redinput.dualmaps" />
+        </Preference>
+
+        <Preference app:title="@string/preference_more_apps">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://play.google.com/store/apps/developer?id=kix2902" />
+        </Preference>
+
+        <Preference app:title="@string/preference_help_developer" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
