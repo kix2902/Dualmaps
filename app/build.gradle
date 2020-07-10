@@ -4,15 +4,19 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+final VERSION_CODE = 33
+final VERSION_NAME = '2.0-beta2'
+
 android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.redinput.dualmaps"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 33
-        versionName "2.0-beta2"
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
         resConfigs "en", "es"
+        resValue "string", "app_version", VERSION_NAME + " [" + VERSION_CODE + "]"
     }
     buildTypes {
         debug {
