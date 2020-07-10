@@ -30,10 +30,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         private const val MIN_ACCURACY = 100
     }
 
-    private val liveStatus = MutableLiveData<LocationStatus?>(null)
-    private val liveLoading = MutableLiveData(false)
-    private val liveMessage = LiveEvent<Message>()
-
     private val fusedProvider =
         LocationServices.getFusedLocationProviderClient(application.applicationContext)
     private val locationRequest = LocationRequest.create()?.apply {
@@ -52,41 +48,52 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         GeocoderRepository.getInstance(application.applicationContext)
     )
 
-    fun getObservableStatus(): LiveData<LocationStatus?> = liveStatus
-    fun getObservableLoading(): LiveData<Boolean> = liveLoading
-    fun getObservableMessage(): LiveData<Message> = liveMessage
+    private val _liveLocationStatus = MutableLiveData<LocationStatus?>(null)
+    val liveLocationStatus: LiveData<LocationStatus?> = _liveLocationStatus
+
+    private val _liveLoading = MutableLiveData(false)
+    val liveLoading: LiveData<Boolean> = _liveLoading
+
+    private val _liveMessage = LiveEvent<Message>()
+    val liveMessage: LiveData<Message> = _liveMessage
+
+    private val _liveUIStatus: MutableLiveData<UIStatus>
+    val liveUIStatus: LiveData<UIStatus>
+
 
     fun getRandomLocation() {
-        liveLoading.value = true
+        _liveLoading.value = true
         getRandomCoordinates.invoke(None()) {
-            liveLoading.value = false
+            _liveLoading.value = false
             when (it) {
                 is Success<*> -> {
                     val success = it as Success<LatLng>
                     val location = success.data
-                    liveStatus.value = LocationStatus(location.latitude, location.longitude)
+                    _liveLocationStatus.value =
+                        LocationStatus(location.latitude, location.longitude)
                     refreshAddress()
                 }
                 is Error -> {
                     Log.e(TAG, "getRandomLocation: ", it.error)
-                    liveMessage.value = Message(MessageType.ERROR, R.string.random_error)
+                    _liveMessage.value = Message(MessageType.ERROR, R.string.random_error)
                 }
             }
         }
     }
 
     fun getCurrentLocation() {
-        liveLoading.value = true
+        _liveLoading.value = true
         fusedProvider.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
-            liveLoading.value = false
+            _liveLoading.value = false
             if (locationResult != null) {
                 val location = locationResult.locations.getOrNull(0)
                 if ((location != null) && (location.hasAccuracy()) && (location.accuracy <= MIN_ACCURACY)) {
-                    liveStatus.value = LocationStatus(location.latitude, location.longitude)
+                    _liveLocationStatus.value =
+                        LocationStatus(location.latitude, location.longitude)
                     refreshAddress()
                 }
             }
@@ -95,13 +102,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun updateBearing(newBearing: Float) {
-        liveStatus.value = liveStatus.value?.apply {
+        _liveLocationStatus.value = _liveLocationStatus.value?.apply {
             bearing = newBearing
         }
     }
 
     fun updateLocation(location: LatLng) {
-        liveStatus.value = liveStatus.value?.apply {
+        _liveLocationStatus.value = _liveLocationStatus.value?.apply {
             latitude = location.latitude
             longitude = location.longitude
         }
@@ -109,20 +116,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun refreshAddress() {
-        liveStatus.value?.let { status ->
+        _liveLocationStatus.value?.let { status ->
             val location = LatLng(status.latitude, status.longitude)
             getAddressFromLocation.invoke(location) {
                 when (it) {
                     is Success<*> -> {
                         val success = it as Success<Geocode.Address>
                         val address = success.data
-                        liveStatus.value = liveStatus.value?.apply {
+                        _liveLocationStatus.value = _liveLocationStatus.value?.apply {
                             this.address = Address(address.title, address.subtitle)
                         }
                     }
                     is Error -> {
                         Log.e(TAG, "getAddressFromLocation: ", it.error)
-                        liveStatus.value = liveStatus.value?.apply {
+                        _liveLocationStatus.value = _liveLocationStatus.value?.apply {
                             this.address = null
                         }
                     }
@@ -132,18 +139,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun searchLocation(query: String) {
-        liveLoading.value = true
+        _liveLoading.value = true
         getLocationFromQuery.invoke(Geocode.Request(query)) {
-            liveLoading.value = false
+            _liveLoading.value = false
             when (it) {
                 is Success<*> -> {
                     val success = it as Success<LatLng>
                     val location = success.data
-                    liveStatus.value = LocationStatus(location.latitude, location.longitude)
+                    _liveLocationStatus.value =
+                        LocationStatus(location.latitude, location.longitude)
                 }
                 is Error -> {
                     Log.e(TAG, "getLocationFromQuery: ", it.error)
-                    liveMessage.value = Message(MessageType.ERROR, R.string.geocoder_error)
+                    _liveMessage.value = Message(MessageType.ERROR, R.string.geocoder_error)
                 }
             }
         }

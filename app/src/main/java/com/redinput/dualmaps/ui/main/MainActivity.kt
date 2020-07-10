@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
     }
 
     private fun observeViewModel() {
-        viewModel.getObservableLoading().observe(this, Observer { isLoading ->
+        viewModel.liveLoading.observe(this, Observer { isLoading ->
             binding.appIcon.apply {
                 when (isLoading) {
                     true -> {
@@ -109,19 +109,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             }
         })
 
-        viewModel.getObservableStatus().observe(this, Observer { status ->
+        viewModel.liveLocationStatus.observe(this, Observer { status ->
             if (status != null) {
                 updateViews(status)
             }
         })
 
-        viewModel.getObservableMessage().observe(this, Observer {
+        viewModel.liveMessage.observe(this, Observer {
             processMessage(it)
         })
     }
 
     private fun checkPermissions() {
-        if (viewModel.getObservableStatus().value == null) {
+        if (viewModel.liveLocationStatus.value == null) {
             if (hasLocationPermission()) {
                 viewModel.getCurrentLocation()
             } else {
@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         }
         googleMap?.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM_DEFAULT))
 
-        viewModel.getObservableStatus().value?.also { status ->
+        viewModel.liveLocationStatus.value?.also { status ->
             val position = LatLng(status.latitude, status.longitude)
             marker = googleMap?.addMarker(MarkerOptions().position(position).draggable(true))
             googleMap?.moveCamera(CameraUpdateFactory.newLatLng(position))
@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
     override fun onStreetViewPanoramaReady(panorama: StreetViewPanorama?) {
         streetView = panorama
 
-        viewModel.getObservableStatus().value?.also { status ->
+        viewModel.liveLocationStatus.value?.also { status ->
             val position = LatLng(status.latitude, status.longitude)
             updatePositionStreetView(position)
             updateBearingStreetView(status.bearing)
@@ -456,7 +456,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             param(FirebaseAnalytics.Param.METHOD, "menu")
         }
 
-        val status = viewModel.getObservableStatus().value
+        val status = viewModel.liveLocationStatus.value
         if (status != null) {
             val text = getString(R.string.share_text_placeholder, status.latitude, status.longitude)
 
