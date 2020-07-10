@@ -1,9 +1,14 @@
 package com.redinput.dualmaps
 
 import androidx.annotation.StringRes
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlin.random.Random
+
+data class UIStatus(
+    var mapType: Int,
+    var showCompass: Boolean,
+    var showAddress: Boolean
+)
 
 data class LocationStatus(
     var latitude: Double,
