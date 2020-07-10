@@ -16,9 +16,8 @@ import com.hadilq.liveevent.LiveEvent
 import com.redinput.dualmaps.*
 import com.redinput.dualmaps.data.GeocoderRepository
 import com.redinput.dualmaps.data.NetworkRepository
-import com.redinput.dualmaps.domain.GetAddressFromLocation
-import com.redinput.dualmaps.domain.GetLocationFromQuery
-import com.redinput.dualmaps.domain.GetRandomCoordinates
+import com.redinput.dualmaps.data.PreferencesRepository
+import com.redinput.dualmaps.domain.*
 import com.redinput.dualmaps.domain.UseCase.None
 import com.redinput.dualmaps.domain.UseCase.Result.Error
 import com.redinput.dualmaps.domain.UseCase.Result.Success
@@ -47,6 +46,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope,
         GeocoderRepository.getInstance(application.applicationContext)
     )
+    private val loadMapType = LoadMapType(
+        viewModelScope,
+        PreferencesRepository.getInstance(application.applicationContext)
+    )
+    private val loadShowCompass = LoadShowCompass(
+        viewModelScope,
+        PreferencesRepository.getInstance(application.applicationContext)
+    )
+    private val loadShowAddress = LoadShowAddress(
+        viewModelScope,
+        PreferencesRepository.getInstance(application.applicationContext)
+    )
 
     private val _liveLocationStatus = MutableLiveData<LocationStatus?>(null)
     val liveLocationStatus: LiveData<LocationStatus?> = _liveLocationStatus
@@ -60,6 +71,35 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _liveUIStatus: MutableLiveData<UIStatus>
     val liveUIStatus: LiveData<UIStatus>
 
+    init {
+        val defaultMapType = application.getString(R.string.default_map_type).toInt()
+        val defaultShowCompass = application.resources.getBoolean(R.bool.default_show_compass)
+        val defaultShowAddress = application.resources.getBoolean(R.bool.default_show_address)
+        _liveUIStatus =
+            MutableLiveData(UIStatus(defaultMapType, defaultShowCompass, defaultShowAddress))
+        liveUIStatus = _liveUIStatus
+    }
+
+    fun updateUI() {
+        loadMapType.invoke(None()) {
+            val newMapType = (it as Success<Int>).data
+            _liveUIStatus.value = _liveUIStatus.value?.apply {
+                mapType = newMapType
+            }
+        }
+        loadShowCompass.invoke(None()) {
+            val newShowCompass = (it as Success<Boolean>).data
+            _liveUIStatus.value = _liveUIStatus.value?.apply {
+                showCompass = newShowCompass
+            }
+        }
+        loadShowAddress.invoke(None()) {
+            val newShowAddress = (it as Success<Boolean>).data
+            _liveUIStatus.value = _liveUIStatus.value?.apply {
+                showAddress = newShowAddress
+            }
+        }
+    }
 
     fun getRandomLocation() {
         _liveLoading.value = true
