@@ -33,7 +33,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.main.MainActivity" />
-        <activity android:name=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/menu_settings" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
