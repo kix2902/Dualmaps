@@ -8,11 +8,11 @@ final VERSION_CODE = 34
 final VERSION_NAME = '2.0-beta3'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.redinput.dualmaps"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode VERSION_CODE
         versionName VERSION_NAME
         resConfigs "en", "es"
