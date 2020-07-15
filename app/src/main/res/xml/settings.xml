@@ -37,8 +37,6 @@
                 android:action="android.intent.action.VIEW"
                 android:data="https://play.google.com/store/apps/developer?id=kix2902" />
         </Preference>
-
-        <Preference app:title="@string/preference_help_developer" />
     </PreferenceCategory>
 
 </PreferenceScreen>
