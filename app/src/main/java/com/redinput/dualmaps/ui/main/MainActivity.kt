@@ -3,7 +3,6 @@ package com.redinput.dualmaps.ui.main
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.view.HapticFeedbackConstants
 import android.view.Menu
@@ -396,7 +395,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         }
         streetView?.animateTo(camera, 0L)
 
-        Handler().postDelayed({
+        binding.streetViewFragment.postDelayed({
             streetView?.setOnStreetViewPanoramaCameraChangeListener(streetViewBearingListener)
         }, 100)
     }
@@ -434,7 +433,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
         binding.bannerTop.text = getString(message.text)
         showBannerTop()
 
-        Handler().postDelayed({ hideBannerTop() }, MESSAGE_DURATION)
+        binding.bannerTop.postDelayed({ hideBannerTop() }, MESSAGE_DURATION)
     }
 
     private fun showBannerTop() {
