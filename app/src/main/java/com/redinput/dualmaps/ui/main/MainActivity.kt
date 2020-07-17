@@ -1,8 +1,6 @@
 package com.redinput.dualmaps.ui.main
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -18,7 +16,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
@@ -472,13 +469,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, OnStreetViewPanora
             }
             .setNegativeButton(R.string.dialog_permission_negative, null)
             .show()
-    }
-
-    private fun hasLocationPermission(): Boolean {
-        return ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun shareLocation() {

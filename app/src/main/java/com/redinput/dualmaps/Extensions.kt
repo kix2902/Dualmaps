@@ -1,7 +1,11 @@
 package com.redinput.dualmaps
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.util.TypedValue
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.core.widget.TextViewCompat
 
 val Any.TAG: String
@@ -20,4 +24,11 @@ fun TextView.setAdaptativeText(text: String, minSize: Int, maxSize: Int) {
             TypedValue.COMPLEX_UNIT_SP
         )
     }
+}
+
+fun Context.hasLocationPermission(): Boolean {
+    return ActivityCompat.checkSelfPermission(
+        this,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
 }
