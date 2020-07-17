@@ -38,4 +38,9 @@
     <string name="preference_gdpr">Collect anonymous data</string>
 
     <string name="preference_more_apps">More apps from developer</string>
+
+    <string name="dialog_change_permission_title">Change location permission</string>
+    <string name="dialog_change_permission_message">To change a permission you must do it from the system app settings</string>
+    <string name="dialog_change_permission_positive">Open settings</string>
+    <string name="dialog_change_permission_negative">Close</string>
 </resources>

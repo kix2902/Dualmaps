@@ -20,4 +20,9 @@
     <string name="preference_gdpr">Recoger datos anónimos</string>
 
     <string name="preference_more_apps">Más aplicaciones del desarrollador</string>
+
+    <string name="dialog_change_permission_title">Cambiar permiso de ubicación</string>
+    <string name="dialog_change_permission_message">Para cambiar un permiso debes hacerlo desde los ajustes del sistema</string>
+    <string name="dialog_change_permission_positive">Abrir ajustes</string>
+    <string name="dialog_change_permission_negative">Cerrar</string>
 </resources>
