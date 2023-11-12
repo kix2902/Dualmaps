@@ -14,7 +14,10 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID "/>
 
     <application
         android:name=".DualmapsApplication"
@@ -26,7 +29,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.onboard.OnboardActivity"
-            android:theme="@style/AppTheme.Onboard">
+            android:theme="@style/AppTheme.Onboard"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
